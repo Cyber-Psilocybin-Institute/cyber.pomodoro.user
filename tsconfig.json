@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es2019",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDirs": ["src", "tests"],
+    "baseUrl": "src",
+    "paths": {
+      "@data/*": ["data/*"],
+      "@domain/*": ["domain/*"],
+      "@infra/*": ["infra/*"],
+      "@core/*": ["core/*"],
+      "@presentation/*": ["presentation/*"],
+      "@validation/*": ["validation/*"],
+      "@tests/*": ["../tests/*"]
+    }
+  },
+  "include": ["src", "tests"],
+  "exclude": []
+}

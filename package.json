@@ -50,7 +50,7 @@
     "@data": "dist/data",
     "@domain": "dist/domain",
     "@infra": "dist/infra",
-    "@main": "dist/main",
+    "@core": "dist/core",
     "@presentation": "dist/presentation",
     "@validation": "dist/validation"
   },
