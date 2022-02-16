@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+
+  cyber_pomodoro_user:
+    container_name: cyber.pomodoro.user
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+      - '/usr/src/app/node_modules'
+    environment:
+      - NODE_ENV=test
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - cyber_pomodoro_user_redis
+    links:
+      - cyber_pomodoro_user_redis
+    ports:
+      - 8080:8080
+    networks: 
+      - services
+    
+    stdin_open: true
+    tty: true
+
+  cyber_pomodoro_user_redis:
+    container_name: cyber.pomodoro.user.redis
+    image: redis
+    restart: on-failure
+    command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379", "--requirepass", "redis-cyber-pomodoro-dev"]
+    networks: 
+      - services
+    ports:
+      - "6379:6379"
+
+networks:
+  services:
+    name: "Cyber pomodoro"
