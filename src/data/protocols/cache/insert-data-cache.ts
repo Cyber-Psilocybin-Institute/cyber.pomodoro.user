@@ -1,7 +1,11 @@
 export interface InsertDataCache {
-  insert: (data: any) => Promise<InsertDataCache.Result>;
+  insert: (data: InsertDataCache.Params) => Promise<InsertDataCache.Result>
 }
 
 export namespace InsertDataCache {
+  export type Params = {
+    key: string
+    value: string
+  }
   export type Result = boolean
 }
