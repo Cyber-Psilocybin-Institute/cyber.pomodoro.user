@@ -1,4 +1,4 @@
-import { SaveUserCache } from "@domain/use-case"
+import { SaveUserCache } from "@domain/use-case/user"
 
 import faker from "faker"
 
@@ -9,6 +9,4 @@ export const mockSaveUserCacheParams = (): SaveUserCache.Params => ({
   profileImage: faker.internet.avatar()
 })
 
-export const mockSaveUserCacheResult = (): SaveUserCache.Result => ({
-  onlineTime: (new Date()).toISOString()
-})
+export const mockSaveUserCacheResult = (): SaveUserCache.Result => faker.datatype.boolean()

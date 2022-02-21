@@ -7,7 +7,5 @@ export interface SaveUserCache {
 export namespace SaveUserCache {
   export type Params = UserModel
 
-  export type Result = {
-    onlineTime: string
-  }
+  export type Result = boolean
 }
