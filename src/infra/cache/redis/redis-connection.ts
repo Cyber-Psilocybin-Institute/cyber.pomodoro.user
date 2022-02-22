@@ -1,9 +1,9 @@
 import Redis from 'ioredis'
 
 type RedisConnectionUri = {
-  host: string | undefined
-  port: number | undefined
-  password: string | undefined
+  host?: string | undefined
+  port?: number | undefined
+  password?: string | undefined
 }
 
 export const RedisConnection = {
