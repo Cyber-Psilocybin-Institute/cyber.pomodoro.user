@@ -36,16 +36,37 @@ describe('insert ()', () => {
     const promise = sut.insert(makeRandomCacheValues())
     await expect(promise).resolves.toBe(true)
   })
+
   it('Should be return false on error', async () => {
     const { sut } = makeSut()
     jest.spyOn(sut, 'insert').mockImplementationOnce(async () => {
-      return new Promise<boolean>((_, reject) => {
+      return new Promise<boolean> ((_, reject) => {
         reject(false)
       })
     })
     const promise = sut.insert(makeRandomCacheValues())
     await expect(promise).rejects.toBe(false)
   })
-  it.todo('atualize if pre-exists')
-  it.todo('set and get an value')
+  
+  it('Should be set and get a record', async () => {
+    const { sut } = makeSut()
+    const cacheData = makeRandomCacheValues()
+    const promise = sut.insert(cacheData)
+    await expect(promise).resolves.toBe(true)
+    
+    const promiseGet = globalRedisClient.get(cacheData.key)
+    await expect(promiseGet).resolves.toBe(cacheData.value)
+  })
+
+  it('Should be must update the value of an existing record', async () => {
+    const { sut } = makeSut()
+    const cacheData = makeRandomCacheValues()
+    const oldValue = faker.internet.password()
+    await globalRedisClient.set(cacheData.key, oldValue)
+    const promise = sut.insert(cacheData)
+    await expect(promise).resolves.toBe(true)
+    
+    const promiseGet = globalRedisClient.get(cacheData.key)
+    await expect(promiseGet).resolves.toBe(cacheData.value)
+  })
 })
