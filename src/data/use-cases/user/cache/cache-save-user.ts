@@ -6,10 +6,10 @@ export class CacheSaveUser implements SaveUserCache {
 
   async save (userData: SaveUserCache.Params): Promise<SaveUserCache.Result> {
     const cacheData = {
-      key: `user:${userData.id}`,
+      key: `user:${userData.user}`,
       value: JSON.stringify(userData)
     }
-    const ok = await this.insertDataCache.insert(cacheData)
-    return ok
+    const inserted = await this.insertDataCache.insert(cacheData)
+    return inserted
   }
 }
