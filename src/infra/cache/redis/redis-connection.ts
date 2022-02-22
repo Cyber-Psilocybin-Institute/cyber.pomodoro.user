@@ -1,23 +1,55 @@
 import Redis from 'ioredis'
 
+type RedisConnectionUri = {
+  host: string | undefined
+  port: number | undefined
+  password: string | undefined
+}
+
 export const RedisConnection = {
-  uri: '' as string,
-  client: null as Redis,
+  hostData: { host: '', port: undefined } as RedisConnectionUri,
+  client: null,
 
-  async connect (uri: string): Promise<void> {
-    this.uri = uri
-    this.client = new Redis(uri)
+  async connect (data: RedisConnectionUri): Promise<boolean> {
+    return new Promise<boolean> ((resolve, reject) => {
+      this.hostData = data
+      
+      this.client = new Redis({
+        host: data?.host,
+        port: data?.port,
+        password: data?.password
+      })
 
-    this.client.on('error', () => console.log('connection to redis server failed'))
-    this.client.on('connect', () => console.log('connection to redis server established'))
-    this.client.on('ready', () => console.log('redis server ready to receive commands'))
+      this.client.on('error', () => {
+        console.log('connection to redis server failed')
+        return reject(false)
+      })
+      this.client.on('connect', () => {
+        console.log('connection to redis server established')
+      })
+      this.client.on('ready', () => {
+        console.log('redis server ready to receive commands')
+        return resolve(true)
+      })
+    })
   },
 
-  async disconnect (): Promise<void> {
-    await this.client.disconnect()
+  async disconnect (): Promise<boolean> {
+    return new Promise<boolean> ((resolve, reject) => {
+      this.client.disconnect()
+      
+      this.client.on('close', () => {
+        console.log('connection to server redis is closed')
+        return resolve(true)
+      })
+      this.client.on('error', () => {
+        console.log('error closing connection to redis server')
+        return reject(false)
+      })
+    })
   },
 
-  getClient (): Redis {
+  getClient (): any {
     return this.client
   }
 }
